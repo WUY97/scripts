@@ -44,13 +44,13 @@ for idx in "${!SSH_URLS[@]}"; do
     gtimeout 10m git clone "$REPO_URL" 2>&1
     cd "$REPO_NAME" || exit
 
-    # Fetch all remote branches
-    git fetch origin
+    # Fetch all branches from the remote
+    git fetch
 
     # Check if the desired branch exists in the remote
     if git show-ref --verify --quiet "refs/remotes/origin/$DESIRED_BRANCH"; then
         echo -e "${GREEN}Branch $DESIRED_BRANCH exists in $REPO_NAME. Checking it out...${RESET}"
-        git checkout -b "$DESIRED_BRANCH"
+        git checkout -b "$DESIRED_BRANCH" "origin/$DESIRED_BRANCH"
         git pull origin "$DESIRED_BRANCH"
     else
         echo -e "${YELLOW}Branch $DESIRED_BRANCH does not exist in $REPO_NAME. Skipping...${RESET}"
